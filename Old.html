@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BuildRight Construction</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        :root {
+            --primary: #F4A950;    /* Orange */
+            --secondary: #161B21;  /* Black */
+            --accent: #F4A950;     /* Accent as same Orange */
+            --light: #f5f5f5;      /* Light background to contrast with black */
+            --dark: #161B21;       /* Black reused as dark */
+            --text: #161B21;       /* Text in Black for consistency */
+        }
+        
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            color: var(--text);
+            background-color: #f7f7f7;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        header {
+            background-color: var(--secondary);
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            z-index: 100;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 0.5rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .nav-links a.active {
+            background-color: var(--primary);
+            color: var(--secondary);
+        }
+        
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            color: var(--light);
+            font-size: 1.5rem;
+        }
+        
+        .login-btn {
+            background-color: var(--primary);
+            color: var(--secondary);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .login-btn:hover {
+            background-color: var(--accent);
+            transform: translateY(-2px);
+        }
+        
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('/api/placeholder/1200/800') center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding-top: 70px;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease 0.3s forwards;
+            opacity: 0;
+        }
+        
+        .cta-btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: var(--secondary);
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            animation: fadeInUp 1s ease 0.6s forwards;
+            opacity: 0;
+        }
+        
+        .cta-btn:hover {
+            background-color: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        /* Slider */
+        .slider-container {
+            padding: 5rem 0;
+            background-color: var(--light);
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--secondary);
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary);
+        }
+        
+        .slider {
+            width: 100%;
+            height: 400px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        
+        .slide.active {
+            opacity: 1;
+        }
+        
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .slider-nav {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+        
+        .slider-nav-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .slider-nav-btn.active {
+            background-color: var(--primary);
+            transform: scale(1.2);
+        }
+        
+        /* Services */
+        .services {
+            padding: 5rem 0;
+            background-color: #f8f8f8;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .service-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        
+        .service-img {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .service-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .service-card:hover .service-img img {
+            transform: scale(1.1);
+        }
+        
+        .service-content {
+            padding: 1.5rem;
+        }
+        
+        .service-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+        
+        .service-content p {
+            margin-bottom: 1.5rem;
+            color: #666;
+        }
+        
+        .service-btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: var(--secondary);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        
+        .service-btn:hover {
+            background-color: var(--primary);
+            color: var(--secondary);
+        }
+        
+        /* Portfolio */
+        .portfolio {
+            padding: 5rem 0;
+            background-color: white;
+        }
+        
+        .portfolio-filter {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .filter-btn {
+            padding: 0.5rem 1.5rem;
+            background-color: #eee;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .filter-btn.active, .filter-btn:hover {
+            background-color: var(--primary);
+            color: var(--secondary);
+        }
+        
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .portfolio-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            height: 250px;
+        }
+        
+        .portfolio-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .portfolio-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(2, 48, 71, 0.8);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .portfolio-item:hover .portfolio-overlay {
+            opacity: 1;
+        }
+        
+        .portfolio-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        .portfolio-overlay h3 {
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+        
+        .portfolio-overlay p {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .view-project {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: var(--primary);
+            color: var(--secondary);
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .view-project:hover {
+            background-color: var(--accent);
+            transform: translateY(-2px);
+        }
+        
+        /* Contact */
+        .contact {
+            padding: 5rem 0;
+            background-color: #f8f8f8;
+        }
+        
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .contact-info {
+            background-color: var(--secondary);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+        }
+        
+        .contact-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .contact-detail {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .contact-icon {
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-right: 1rem;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .contact-form {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .contact-form h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-input:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+        
+        textarea.form-input {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background-color: var(--primary);
+            color: var(--secondary);
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background-color: var(--accent);
+            transform: translateY(-2px);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 3rem 0 1rem;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-col h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        .footer-col h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--primary);
+        }
+        
+        .footer-col ul {
+            list-style: none;
+        }
+        
+        .footer-col ul li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-col ul li a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-col ul li a:hover {
+            color: var(--primary);
+            padding-left: 5px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .social-icon:hover {
+            background-color: var(--primary);
+            color: var(--secondary);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        
+        /* Login Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+            animation: modalFadeIn 0.5s;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-header h3 {
+            font-size: 1.8rem;
+            color: var(--secondary);
+        }
+        
+        .close-btn {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s;
+        }
+        
+        .close-btn:hover {
+            color: var(--secondary);
+        }
+        
+        .login-form .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .login-form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .login-form .form-input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .login-form .login-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: var(--primary);
+            color: var(--secondary);
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .login-form .login-btn:hover {
+            background-color: var(--accent);
+        }
+        
+        .register-link {
+            text-align: center;
+            margin-top: 1rem;
+        }
+        
+        .register-link a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 80%;
+                height: calc(100vh - 70px);
+                background-color: var(--secondary);
+                flex-direction: column;
+                padding: 2rem;
+                transition: left 0.3s;
+            }
+            
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .hamburger {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <i class="fas fa-hard-hat"></i>
+                    BuildRight
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#home" class="active">Home</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <div class="hamburger">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <a href="#" class="login-btn" id="loginButton">Login</a>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Building Your Dreams Into Reality</h1>
+                <p>We provide professional construction services with quality, reliability and customer satisfaction as our top priority.</p>
+                <a href="#contact" class="cta-btn">Get Free Quote</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Project Slider -->
+    <section class="slider-container">
+        <div class="container">
+            <h2 class="section-title">Our Recent Projects</h2>
+            <div class="slider">
+                <div class="slide active">
+                    <img src="/api/placeholder/1200/800" alt="Project 1">
+                </div>
+                <div class="slide">
+                    <img src="/api/placeholder/1200/800" alt="Project 2">
+                </div>
+                <div class="slide">
+                    <img src="/api/placeholder/1200/800" alt="Project 3">
+                </div>
+                <div class="slider-nav">
+                    <div class="slider-nav-btn active"></div>
+                    <div class="slider-nav-btn"></div>
+                    <div class="slider-nav-btn"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="container">
+            <h2 class="section-title">Our Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="data:image/jpeg;base64,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" alt="Marble Works">
+                    </div>
+                    <div class="service-content">
+                        <h3>Marble Works</h3>
+                        <p>Premium quality marble installation with expert craftsmanship for floors, countertops, and decorative elements.</p>
+                        <a href="#" class="service-btn">Learn More</a>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="/api/placeholder/600/400" alt="Tile Installation">
+                    </div>
+                    <div class="service-content">
+                        <h3>Tile Installation</h3>
+                        <p>Professional tile installation for bathrooms, kitchens, and living spaces with a wide variety of options.</p>
+                        <a href="#" class="service-btn">Learn More</a>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="/api/placeholder/600/400" alt="Italian Marble">
+                    </div>
+                    <div class="service-content">
+                        <h3>Italian Marble</h3>
+                        <p>Exclusive Italian marble selections that add elegance and sophistication to any space.</p>
+                        <a href="#" class="service-btn">Learn More</a>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="/api/placeholder/600/400" alt="Granite Works">
+                    </div>
+                    <div class="service-content">
+                        <h3>Granite Works</h3>
+                        <p>Durable and aesthetic granite installations for countertops, floors, and exterior applications.</p>
+                        <a href="#" class="service-btn">Learn More</a>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="/api/placeholder/600/400" alt="Red Stone Work">
+                    </div>
+                    <div class="service-content">
+                        <h3>Red Stone Work</h3>
+                        <p>Beautiful red stone installations that add warmth and character to buildings and landscapes.</p>
+                        <a href="#" class="service-btn">Learn More</a>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="/api/placeholder/600/400" alt="Custom Construction">
+                    </div>
+                    <div class="service-content">
+                        <h3>Custom Construction</h3>
+                        <p>Tailored construction solutions to meet your specific needs and design preferences.</p>
+                        <a href="#" class="service-btn">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Portfolio -->
+    <section class="portfolio" id="projects">
+        <div class="container">
+            <h2 class="section-title">Our Projects</h2>
+            <div class="portfolio-filter">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="residential">Residential</button>
+                <button class="filter-btn" data-filter="commercial">Commercial</button>
+                <button class="filter-btn" data-filter="interior">Interior</button>
+            </div>
+            <div class="portfolio-grid">
+                <div class="portfolio-item" data-category="residential">
+                    <img src="/api/placeholder/600/400" alt="Project 1">
+                    <div class="portfolio-overlay">
+                        <h3>Modern Villa</h3>
+                        <p>Residential Project</p>
+                        <a href="#" class="view-project">View Details</a>
+                    </div>
+                </div>
+                
+                <div class="portfolio-item" data-category="commercial">
+                    <img src="/api/placeholder/600/400" alt="Project 2">
+                    <div class="portfolio-overlay">
+                        <h3>Office Complex</h3>
+                        <p>Commercial Project</p>
+                        <a href="#" class="view-project">View Details</a>
+                    </div>
+                </div>
+                
+                <div class="portfolio-item" data-category="interior">
+                    <img src="/api/placeholder/600/400" alt="Project 3">
+                    <div class="portfolio-overlay">
+                        <h3>Italian Marble Flooring</h3>
+                        <p>Interior Design</p>
+                        <a href="#" class="view-project">View Details</a>
+                    </div>
+                </div>
+                
+                <div class="portfolio-item" data-category="residential">
+                    <img src="/api/placeholder/600/400" alt="Project 4">
+                    <div class="portfolio-overlay">
+                        <h3>Luxury Home</h3>
+                        <p>Residential Project</p>
+                        <a href="#" class="view-project">View Details</a>
+                    </div>
+                </div>
+                
+                <div class="portfolio-item" data-category="commercial">
+                    <img src="/api/placeholder/600/400" alt="Project 5">
+                    <div class="portfolio-overlay">
+                        <h3>Shopping Mall</h3>
+                        <p>Commercial Project</p>
+                        <a href="#" class="view-project">View Details</a>
+                    </div>
+                </div>
+                
+                <div class="portfolio-item" data-category="interior">
+                    <img src="/api/placeholder/600/400" alt="Project 6">
+                    <div class="portfolio-overlay">
+                        <h3>Granite Kitchen</h3>
+                        <p>Interior Design</p>
+                        <a href="#" class="view-project">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <h2 class="section-title">Contact Us</h2>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3>Get In Touch</h3>
+                    <div class="contact-detail">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div>
+                            <p>123 Construction Way, Building City, 12345</p>
+                        </div>
+                    </div>
+                    <div class="contact-detail">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div>
+                            <p>+1 (555) 123-4567</p>
+                        </div>
+                    </div>
+                    <div class="contact-detail">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                            <p>info@buildright.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-detail">
+                        <div class="contact-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div>
+                            <p>Monday - Friday: 8:00 AM - 6:00 PM</p>
+                            <p>Saturday: 9:00 AM - 2:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <h3>Send a Message</h3>
+                    <form id="contactForm">
+                        <div class="

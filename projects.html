@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Our Projects</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #fff;
+      color: #0d2b45;
+    }
+
+    .portfolio {
+      padding: 60px 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 42px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 4px;
+      background-color: #f9b401;
+      margin: 10px auto 30px;
+      border-radius: 2px;
+    }
+
+    .portfolio-filter {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .filter-btn {
+      padding: 10px 22px;
+      margin: 5px;
+      border: none;
+      background-color: #f2f2f2;
+      color: #111;
+      font-weight: 600;
+      border-radius: 999px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .filter-btn:hover {
+      background-color: #e6e6e6;
+    }
+
+    .filter-btn.active {
+      background-color: #ffba00;
+      color: #fff;
+    }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+    }
+
+    .portfolio-item {
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .portfolio-item img {
+      width: 100%;
+      height: 180px;
+      border-radius: 8px;
+      object-fit: cover;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.06);
+      transition: transform 0.3s ease;
+    }
+
+    .portfolio-item:hover img {
+      transform: scale(1.03);
+    }
+
+    .portfolio-item h3 {
+      margin-top: 12px;
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    @media (max-width: 768px) {
+      .section-title {
+        font-size: 32px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<section class="portfolio" id="projects">
+  <div class="container">
+    <h2 class="section-title">Our Projects</h2>
+    <div class="portfolio-filter">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="residential">Residential</button>
+      <button class="filter-btn" data-filter="commercial">Commercial</button>
+      <button class="filter-btn" data-filter="interior">Interior</button>
+    </div>
+    <div class="portfolio-grid">
+      <div class="portfolio-item" data-category="residential">
+        <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=60" alt="Project 1">
+        <h3>Modern Villa</h3>
+      </div>
+      <div class="portfolio-item" data-category="commercial">
+        <img src="https://media.istockphoto.com/id/164478916/photo/colorful-corporate-building-at-fall.jpg?s=612x612&w=0&k=20&c=J6vvhlzkfi5F0uDZ9pFCCnO7WlLSnGtkwCzNWQIiLz8=" alt="Project 2">
+        <h3>Office Complex</h3>
+      </div>
+      <div class="portfolio-item" data-category="interior">
+        <img src="https://surl.li/erchiq" alt="Project 3">
+        <h3>Italian Marble Floor</h3>
+      </div>
+      <div class="portfolio-item" data-category="residential">
+        <img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=800&q=60" alt="Project 4">
+        <h3>Luxury Home</h3>
+      </div>
+      <div class="portfolio-item" data-category="commercial">
+        <img src="https://media.istockphoto.com/id/977073002/photo/sunny-of-minato-mirai-urban-landscape%EF%BC%93.jpg?s=612x612&w=0&k=20&c=QDoS7sJJmx8wC671yJgDyFHYeMFMHrtF1NQNzIzJNqw=" alt="Project 5">
+        <h3>Shopping Mall</h3>
+      </div>
+      <div class="portfolio-item" data-category="interior">
+        <img src="https://surl.li/dqbcow" alt="Project 6">
+        <h3>Granite Kitchen</h3>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  const portfolioItems = document.querySelectorAll('.portfolio-item');
+
+  filterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const filter = btn.dataset.filter;
+
+      portfolioItems.forEach(item => {
+        const category = item.dataset.category;
+        if (filter === 'all' || category === filter) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
