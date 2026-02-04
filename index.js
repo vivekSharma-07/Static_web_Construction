@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-// Google Sheets Web App URL provided by you
-=======
-// Google Sheets Web App URL
->>>>>>> 5f5f97a624a4e83791eb84b0c64e20675c33628a
 const scriptURL = 'https://script.google.com/macros/s/AKfycbxR1Dl2Jeh2s0AphAPpw_BrhO3v8IlGD8q9xnHHc_9C6t8S8ComSfiTibYylY_zJk3d/exec';
 
 // Wait for the DOM to load
