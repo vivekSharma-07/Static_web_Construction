@@ -1,6 +1,5 @@
 const scriptURL = 'https://script.google.com/macros/s/AKfycbxR1Dl2Jeh2s0AphAPpw_BrhO3v8IlGD8q9xnHHc_9C6t8S8ComSfiTibYylY_zJk3d/exec';
 
-// Wait for the DOM to load
 document.addEventListener('DOMContentLoaded', function() {
     
     // 1. Navigation scroll effect
@@ -21,10 +20,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (burger) {
         burger.addEventListener('click', function() {
-            // Toggle Nav
             nav.classList.toggle('nav-active');
             
-            // Animate Links
             navLinks.forEach((link, index) => {
                 if (link.style.animation) {
                     link.style.animation = '';
@@ -33,7 +30,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
             
-            // Burger Animation
             burger.classList.toggle('toggle');
         });
     }
@@ -56,7 +52,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (slides[currentSlide]) slides[currentSlide].classList.add('active');
         if (dots[currentSlide]) dots[currentSlide].classList.add('active');
         
-        // Reset timer
         clearInterval(slideTimer);
         slideTimer = setInterval(nextSlide, slideInterval);
     }
@@ -100,7 +95,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (testimonials[currentTestimonial]) testimonials[currentTestimonial].classList.add('active');
         if (tDots[currentTestimonial]) tDots[currentTestimonial].classList.add('active');
         
-        // Reset timer
         clearInterval(testimonialTimer);
         testimonialTimer = setInterval(nextTestimonial, testimonialInterval);
     }
@@ -118,11 +112,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (testimonials.length > 0) {
         testimonialTimer = setInterval(nextTestimonial, testimonialInterval);
     }
-    
-<<<<<<< HEAD
-    // 5. Contact Form Submission (Google Sheets)
-=======
-    // Scroll animations
+
+    // 5. Scroll animations
     const animatedElements = document.querySelectorAll('.animate-on-scroll');
     
     function checkScroll() {
@@ -138,9 +129,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     window.addEventListener('scroll', checkScroll);
-    checkScroll(); // Check on initial load
+    checkScroll();
     
-    // Login form validation
+    // 6. Login form validation
     const loginForm = document.getElementById('login-form');
     
     if (loginForm) {
@@ -170,8 +161,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Contact form validation and Google Sheets submission
->>>>>>> 5f5f97a624a4e83791eb84b0c64e20675c33628a
+    // 7. Contact form validation and Google Sheets submission
     const contactForm = document.getElementById('contact-form');
     
     if (contactForm) {
@@ -179,16 +169,11 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             
             const name = document.getElementById('name').value;
-            const phone = document.getElementById('phone').value;
             const message = document.getElementById('message').value;
             
             let isValid = true;
             let errorMessage = '';
             
-<<<<<<< HEAD
-            // Validation: Subject and Email removed per your request
-=======
->>>>>>> 5f5f97a624a4e83791eb84b0c64e20675c33628a
             if (!name || name.length < 2) {
                 isValid = false;
                 errorMessage = 'Please enter your name.';
@@ -198,30 +183,16 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             if (isValid) {
-                // UI feedback: Disable button while sending
-<<<<<<< HEAD
                 const submitBtn = contactForm.querySelector('button[type="submit"]') || document.getElementById('submit');
-=======
-                const submitBtn = contactForm.querySelector('button[type="submit"]');
->>>>>>> 5f5f97a624a4e83791eb84b0c64e20675c33628a
                 const originalText = submitBtn.textContent;
                 submitBtn.textContent = 'Sending...';
                 submitBtn.disabled = true;
 
-<<<<<<< HEAD
-                // Send data to Google Sheets script
-=======
-                // Send data to Google Sheets
->>>>>>> 5f5f97a624a4e83791eb84b0c64e20675c33628a
                 fetch(scriptURL, { method: 'POST', body: new FormData(contactForm)})
                 .then(response => {
                     submitBtn.textContent = originalText;
                     submitBtn.disabled = false;
-<<<<<<< HEAD
                     showFormMessage('Your message has been sent successfully!', 'success');
-=======
-                    showFormMessage('Your message has been sent to our records!', 'success');
->>>>>>> 5f5f97a624a4e83791eb84b0c64e20675c33628a
                     contactForm.reset();
                     console.log("Success!", response);
                 })
@@ -237,7 +208,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // 6. Project gallery filter
+    // 8. Project gallery filter
     const filterButtons = document.querySelectorAll('.filter-btn');
     const galleryItems = document.querySelectorAll('.gallery-item');
     
@@ -259,27 +230,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-<<<<<<< HEAD
 /**
  * Shared Helper Functions
  */
-
-function showFormMessage(message, type) {
-    const formMessage = document.querySelector('.form-message') || createMessageElement();
-    
-    formMessage.textContent = message;
-    formMessage.className = 'form-message'; // Reset classes
-    formMessage.classList.add(type === 'success' ? 'success-message' : 'error-message');
-    formMessage.style.opacity = '1';
-    
-    // Auto-hide after 5 seconds
-    setTimeout(() => {
-        formMessage.style.opacity = '0';
-        setTimeout(() => {
-            formMessage.remove();
-        }, 300);
-=======
-// Helper and Shared Functions
 function validateEmail(email) {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
@@ -288,38 +241,22 @@ function validateEmail(email) {
 function showFormMessage(message, type) {
     const formMessage = document.querySelector('.form-message') || createMessageElement();
     formMessage.textContent = message;
-    formMessage.className = 'form-message'; // Reset
+    formMessage.className = 'form-message';
     formMessage.classList.add(type === 'success' ? 'success-message' : 'error-message');
+    formMessage.style.opacity = '1';
     
-    // Auto-hide after 5 seconds
     setTimeout(() => {
         if (formMessage) {
             formMessage.style.opacity = '0';
             setTimeout(() => formMessage.remove(), 300);
         }
->>>>>>> 5f5f97a624a4e83791eb84b0c64e20675c33628a
     }, 5000);
 }
 
 function createMessageElement() {
     const messageElement = document.createElement('div');
     messageElement.className = 'form-message';
-<<<<<<< HEAD
-    
-    // Add it to the form container
-    const formContainer = document.querySelector('.form-container') || document.body;
-    formContainer.insertBefore(messageElement, formContainer.firstChild);
-    
-    return messageElement;
-}
-
-function validateEmail(email) {
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
-}
-=======
     const formContainer = document.querySelector('.form-container') || document.body;
     formContainer.insertBefore(messageElement, formContainer.firstChild);
     return messageElement;
 }
->>>>>>> 5f5f97a624a4e83791eb84b0c64e20675c33628a
