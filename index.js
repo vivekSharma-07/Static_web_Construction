@@ -1,3 +1,6 @@
+// Google Sheets Web App URL
+const scriptURL = 'https://script.google.com/macros/s/AKfycbxR1Dl2Jeh2s0AphAPpw_BrhO3v8IlGD8q9xnHHc_9C6t8S8ComSfiTibYylY_zJk3d/exec';
+
 // Wait for the DOM to load
 document.addEventListener('DOMContentLoaded', function() {
     // Navigation scroll effect
@@ -148,7 +151,6 @@ document.addEventListener('DOMContentLoaded', function() {
             let isValid = true;
             let errorMessage = '';
             
-            // Basic validation
             if (!email || !validateEmail(email)) {
                 isValid = false;
                 errorMessage = 'Please enter a valid email address.';
@@ -158,10 +160,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             if (isValid) {
-                // In a real scenario, you'd send this to a server
-                // For demo purposes, simulating success
                 showFormMessage('Login successful!', 'success');
-                // Redirect after 2 seconds
                 setTimeout(() => {
                     window.location.href = 'index.html';
                 }, 2000);
@@ -171,35 +170,50 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Contact form validation
+    // Contact form validation and Google Sheets submission
     const contactForm = document.getElementById('contact-form');
     
     if (contactForm) {
         contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
+            
             const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
             const message = document.getElementById('message').value;
+            
             let isValid = true;
             let errorMessage = '';
             
-            // Basic validation
             if (!name || name.length < 2) {
                 isValid = false;
                 errorMessage = 'Please enter your name.';
-            } else if (!email || !validateEmail(email)) {
-                isValid = false;
-                errorMessage = 'Please enter a valid email address.';
             } else if (!message || message.length < 10) {
                 isValid = false;
                 errorMessage = 'Please enter a message (minimum 10 characters).';
             }
             
             if (isValid) {
-                // In a real scenario, you'd send this to a server
-                // For demo purposes, simulating success
-                showFormMessage('Your message has been sent. We\'ll get back to you soon!', 'success');
-                contactForm.reset();
+                // UI feedback: Disable button while sending
+                const submitBtn = contactForm.querySelector('button[type="submit"]');
+                const originalText = submitBtn.textContent;
+                submitBtn.textContent = 'Sending...';
+                submitBtn.disabled = true;
+
+                // Send data to Google Sheets
+                fetch(scriptURL, { method: 'POST', body: new FormData(contactForm)})
+                .then(response => {
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                    showFormMessage('Your message has been sent to our records!', 'success');
+                    contactForm.reset();
+                    console.log("Success!", response);
+                })
+                .catch(error => {
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                    showFormMessage('Submission failed. Please try again.', 'error');
+                    console.error('Error!', error.message);
+                });
             } else {
                 showFormMessage(errorMessage, 'error');
             }
@@ -212,7 +226,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     filterButtons.forEach(button => {
         button.addEventListener('click', () => {
-            // Update active button
             filterButtons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
             
@@ -227,37 +240,33 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
-    
-    // Helper functions
-    function validateEmail(email) {
-        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(String(email).toLowerCase());
-    }
-    
-    function showFormMessage(message, type) {
-        const formMessage = document.querySelector('.form-message') || createMessageElement();
-        
-        formMessage.textContent = message;
-        formMessage.className = 'form-message'; // Reset classes
-        formMessage.classList.add(type === 'success' ? 'success-message' : 'error-message');
-        
-        // Auto-hide after 5 seconds
-        setTimeout(() => {
-            formMessage.style.opacity = '0';
-            setTimeout(() => {
-                formMessage.remove();
-            }, 300);
-        }, 5000);
-    }
-    
-    function createMessageElement() {
-        const messageElement = document.createElement('div');
-        messageElement.className = 'form-message';
-        
-        // Add it to the form or its container
-        const formContainer = document.querySelector('.form-container') || document.body;
-        formContainer.insertBefore(messageElement, formContainer.firstChild);
-        
-        return messageElement;
-    }
 });
+
+// Helper and Shared Functions
+function validateEmail(email) {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
+
+function showFormMessage(message, type) {
+    const formMessage = document.querySelector('.form-message') || createMessageElement();
+    formMessage.textContent = message;
+    formMessage.className = 'form-message'; // Reset
+    formMessage.classList.add(type === 'success' ? 'success-message' : 'error-message');
+    
+    // Auto-hide after 5 seconds
+    setTimeout(() => {
+        if (formMessage) {
+            formMessage.style.opacity = '0';
+            setTimeout(() => formMessage.remove(), 300);
+        }
+    }, 5000);
+}
+
+function createMessageElement() {
+    const messageElement = document.createElement('div');
+    messageElement.className = 'form-message';
+    const formContainer = document.querySelector('.form-container') || document.body;
+    formContainer.insertBefore(messageElement, formContainer.firstChild);
+    return messageElement;
+}
