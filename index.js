@@ -131,36 +131,6 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('scroll', checkScroll);
     checkScroll();
     
-    // 6. Login form validation
-    const loginForm = document.getElementById('login-form');
-    
-    if (loginForm) {
-        loginForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            let isValid = true;
-            let errorMessage = '';
-            
-            if (!email || !validateEmail(email)) {
-                isValid = false;
-                errorMessage = 'Please enter a valid email address.';
-            } else if (!password || password.length < 6) {
-                isValid = false;
-                errorMessage = 'Password must be at least 6 characters.';
-            }
-            
-            if (isValid) {
-                showFormMessage('Login successful!', 'success');
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 2000);
-            } else {
-                showFormMessage(errorMessage, 'error');
-            }
-        });
-    }
-    
     // 7. Contact form validation and Google Sheets submission
     const contactForm = document.getElementById('contact-form');
     

@@ -153,12 +153,11 @@ img {
     justify-content: space-between;
     align-items: center;
     padding: 5px 5%;
-    /* background-color: rgba(44, 62, 80, 0.95); */
-    /* background: linear-gradient(90deg, #161B21, #2C2F36); */
-    /* background-color: #234E70; */ 
     background-color: black;
     z-index: 1000;
     transition: all 0.3s ease;
+    overflow: visible !important;
+    height: 80px;
 }
 /* .navbar a {
     color: #F4A950;
@@ -221,39 +220,69 @@ img {
     width: 100%;
 }
 
-.login-btn {
-    background-color: var(--secondary-color);
-    padding: 8px 20px;
-    border-radius: 4px;
-}
-
-.login-btn:hover {
-    background-color: #d35400;
-}
 
 .burger {
-    display: none;
+    display: none; /* Hidden on desktop */
     cursor: pointer;
+    z-index: 1005; /* Keeps the icon on top of the menu */
 }
 
 .burger div {
     width: 25px;
     height: 3px;
-    background-color: var(--light-text);
+    background-color: #FBF8BE; /* A light visible color */
     margin: 5px;
     transition: all 0.3s ease;
 }
+.toggle .line1 {
+    transform: rotate(-45deg) translate(-5px, 6px);
+}
+.toggle .line2 {
+    opacity: 0;
+}
+.toggle .line3 {
+    transform: rotate(45deg) translate(-5px, -6px);
+}
 
+@media screen and (max-width: 768px) {
+    .burger {
+        display: block;
+        cursor: pointer;
+        z-index: 1010; /* Keeps icon above the sliding menu */
+    }
+}
+@media screen and (max-width: 768px) {
+    .nav-links {
+        position: absolute;
+        right: 0px;
+        height: 100px;
+        top: 8vh;
+        background-color: black; /* Solid background for readability */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content:space-evenly; /* Centers links vertically in the menu */
+        width: 60%; 
+        transform: translateX(100%); 
+        transition: transform 0.5s ease-in;
+        z-index: 1000;
+    }
+
+    .nav-links li {
+        opacity: 0; /* Required for the fade-in animation to start from hidden */
+        margin: 20px 0; /* Adds vertical spacing between links */
+    }
+
+    .nav-active {
+        transform: translateX(0%);
+    }
+}
 /* Hero Section */
 .hero {
     height: 100vh;
-   /* background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/api/placeholder/1920/1080") center/cover no-repeat; */
    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
-            url("images/BG.jpg") center/cover no-repeat;
-   /* background-image: url("https://media.istockphoto.com/id/579157120/vector/construction-skyline-scene-blue-background.jpg?s=612x612&w=0&k=20&c=igltrPF2-r-2onl82frfP0wk8Q_TL428NE1UErg9UBM=") ; */
+   url("images/BG.jpg") center/cover no-repeat;
     display: flex;
-    /* background-repeat: no-repeat;
-    background-size:cover ; */
     align-items: center;
     justify-content: center;
     text-align: center;
@@ -344,6 +373,7 @@ img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    display: block;
 }
 
 .slide-content {
@@ -423,6 +453,9 @@ img {
     overflow: hidden;
     transition: transform 0.3s ease;
     height: 100%;
+    max-width: 300px; /* Reduces the width of each card */
+    margin: 0 auto;   /* Centers the cards within the grid */
+    height: auto;
 }
 
 .service-img img {
@@ -437,6 +470,7 @@ img {
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
+    
 }
 
 .service-content h3 {
@@ -719,9 +753,10 @@ footer {
         display: flex;
         flex-direction: column;
         align-items: center;
-        width: 50%;
+        width: 60%;
         transform: translateX(100%);
         transition: transform 0.5s ease-in;
+        z-index: 1000;
     }
     
     .nav-links li {
@@ -731,7 +766,8 @@ footer {
     
     .burger {
         display: block;
-        z-index: 1002;
+        z-index: 1005;
+        cursor: pointer;
     }
     
     .nav-active {
@@ -774,13 +810,13 @@ footer {
 
 /* Restructured Contact Page */
 .contact-section {
-    padding: 100px 0;
+    padding: 50px 0;
     background-color: #FBEAEB;
 }
 
 .contact-content {
     display: grid;
-    grid-template-columns: 1fr 1.2fr; /* Side-by-side layout */
+    grid-template-columns: 1fr 1fr; /* Side-by-side layout */
     gap: 50px;
     background: #fff;
     border-radius: 20px;
@@ -1145,4 +1181,14 @@ footer {
 
 ::-webkit-scrollbar-thumb:hover {
     background: var(--secondary-color);
+}
+@keyframes navLinkFade {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0px);
+    }
 }
